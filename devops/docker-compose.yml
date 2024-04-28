@@ -1,0 +1,33 @@
+version: '3.7'
+services:
+  was:
+    container_name: $COMPOSE_PROJECT_NAME
+    image: hb.koapp.com/${GROUP}/${PROJECT}:latest
+    user: ${CURRENT_UID}
+    restart: always
+
+    ports:
+      - '${MYPORT}:3000'
+    stdin_open: true
+    tty: true
+    labels:
+      io.portainer.accesscontrol.users: $USER
+    volumes:
+      - ${PROJECT_DIR}:/usr/src/app
+    environment:
+      ENV_USER_NAME: ${USER} #구분
+      #DATABASE
+      DB_HOST: ${STORE_DB_HOST}
+      DB_PORT: ${STORE_DB_PORT}
+      DB_USER: ${STORE_DB_USER}
+      DB_PASSWORD: ${STORE_DB_PASSWORD}
+      DB_DATABASE: ${STORE_DB_DATABASE}
+      #LOG
+      LOG_PATH: ${STORE_LOG_PATH}
+      # NODE_ENV: development
+      SERVER_MODE: development #개발모드
+      # SERVER_MODE: production
+
+      network_mode: bridge
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'

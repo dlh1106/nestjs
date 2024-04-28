@@ -1,0 +1,12 @@
+build_develop:
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD hb.koapp.com
+    - echo "Building the app"
+    - cd devops && bash docker-build.sh
+
+deploy_develop:
+  before_script:    
+    - export KUBECONFIG=~/.kube/mk-dev-config
+    - echo "Deploy to server"
+    # - kubectl apply -f devops/deploy-dev.yaml
+    # - kubectl rollout restart deployment api-gateway -n api-gateway
